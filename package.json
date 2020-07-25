@@ -1,3 +1,43 @@
 {
-  
+  "name": "@drewsonne/maya-date-parser",
+  "version": "1.0.0",
+  "description": "Node.js package to parse maya date calculator instructions to executable code",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/drewsonne/maya-date-parser.git"
+  },
+  "keywords": [
+    "digital-humanities",
+    "maya",
+    "maya-calendar"
+  ],
+  "author": "Drew J. Sonne <drew.sonne@gmail.com>",
+  "license": "GPL-3.0",
+  "private": false,
+  "devDependencies": {
+    "esdoc": "1.1.0",
+    "esdoc-standard-plugin": "1.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^23.3.0",
+    "jest-cli": "^25.1.0",
+    "regenerator-runtime": "^0.13.3",
+    "@babel/preset-env": "^7.8.4"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/drewsonne/maya-date-parser/issues"
+  },
+  "homepage": "https://github.com/drewsonne/maya-date-parser#readme",
+  "preset": "react-native"
 }
