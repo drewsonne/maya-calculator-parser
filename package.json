@@ -35,6 +35,9 @@
       "^.+\\.[t|j]sx?$": "babel-jest"
     }
   },
+  "dependencies": {
+    "@drewsonne/maya-dates": "^1.0.13"
+  },
   "bugs": {
     "url": "https://github.com/drewsonne/maya-date-parser/issues"
   },
