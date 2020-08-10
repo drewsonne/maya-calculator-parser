@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "lib": [
+      "es6",
+      "ES2016.Array.Include",
+      "es2015",
+      "es2016",
+      "es2019"
+    ],
+    "types": ["node"],
+    "declaration": true,
+    "outDir": "lib",
+    "rootDir": "src",
+    "strict": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "declarationMap": true
+  },
+  "exclude": [
+    "lib",
+    "node_modules",
+    "src/**/*.spec.ts"
+  ],
+  "include": [
+    "src",
+    "decs.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
