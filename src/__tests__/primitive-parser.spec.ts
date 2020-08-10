@@ -14,10 +14,10 @@ import CommentToken from "../tokens/primitive/comment-token";
 import OperatorToken from "../tokens/primitive/operator-token";
 
 
-const NT = (n) => new NumberToken(n)
-const WT = (w) => new WordToken(w)
-const CT = (c) => new CommentToken(c)
-const OT = (o) => new OperatorToken(o)
+const NT = (n: number) => new NumberToken(n)
+const WT = (w: string) => new WordToken(w)
+const CT = (c: string) => new CommentToken(c)
+const OT = (o: string) => new OperatorToken(o)
 const PT = new PeriodToken()
 const LET = new LineEndToken()
 const ST = new SpaceToken()
@@ -27,7 +27,7 @@ const CST = new CommentStartToken()
 describe('primitive parser', () => {
 
   describe('should parse operators', () => {
-    const operations: [string, TokenCollection][] = [
+    const looseOperations: [string, IToken[]][] = [
       [
         '4 Ajaw 8 Kumk\'u - 5 Kimi 4 Mol',
         [
@@ -43,7 +43,10 @@ describe('primitive parser', () => {
           ST, OT('+'), ST,
           NT(10), PT, NT(5), PT, NT(1)]
       ]
-    ].map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
+    ]
+    const operations: [string, TokenCollection][] = looseOperations.map((row: [string, IToken[]]) => {
+      return [row[0], new TokenCollection(row[1])];
+    })
     operations.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
@@ -61,7 +64,7 @@ describe('primitive parser', () => {
   })
 
   describe('should parse comments', () => {
-    const fullLines: [string, TokenCollection][] = [
+    const looseFullLines: [string, IToken[]][] = [
       [
         '1Ok * * 9.*.10.10.10 # Hello world, this is a comment',
         [
@@ -78,7 +81,8 @@ describe('primitive parser', () => {
         ]
       ]
 
-    ].map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
+    ]
+    const fullLines: [string, TokenCollection][] = looseFullLines.map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
     fullLines.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
@@ -96,12 +100,13 @@ describe('primitive parser', () => {
   });
 
   describe('should parse full dates', () => {
-    const fullDates: [string, TokenCollection][] = [
+    const looseFullDates: [string, IToken[]][] = [
       [
         '1Ok * * 9.*.10.10.10',
         [NT(1), WT('Ok'), ST, WCT, ST, WCT, ST, NT(9), PT, WCT, PT, NT(10), PT, NT(10), PT, NT(10)]
       ]
-    ].map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
+    ]
+    const fullDates: [string, TokenCollection][] = looseFullDates.map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
     fullDates.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
@@ -118,7 +123,7 @@ describe('primitive parser', () => {
     })
   });
   describe('should parse calendar rounds', () => {
-    const crs: [string, TokenCollection][] = [
+    const looseCrs: [string, IToken[]][] = [
       ['4 Ajaw 8 Kumk\'u', [NT(4), ST, WT('Ajaw'), ST, NT(8), ST, WT('Kumk\'u')]],
       ['3 Kawak **', [NT(3), ST, WT('Kawak'), ST, WCT, WCT]],
       ['* Ajaw 8 Kumk\'u', [WCT, ST, WT('Ajaw'), ST, NT(8), ST, WT('Kumk\'u')]],
@@ -131,7 +136,8 @@ describe('primitive parser', () => {
       ['6 Kimi * * ', [NT(6), ST, WT('Kimi'), ST, WCT, ST, WCT, ST]],
       ['5 Kimi 4 Mol', [NT(5), ST, WT('Kimi'), ST, NT(4), ST, WT('Mol')]],
       ['* Chikchan 3 Mol', [WCT, ST, WT('Chikchan'), ST, NT(3), ST, WT('Mol')]],
-    ].map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
+    ]
+    const crs: [string, TokenCollection][] = looseCrs.map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
     crs.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
