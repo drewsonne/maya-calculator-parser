@@ -1,17 +1,15 @@
+import NumberToken from "../tokens/primitive/number-token";
 import {expect} from 'chai'
 import 'mocha'
-import NumberToken from "../tokens/layer-0/number-token";
-import {Token} from "../tokens/base";
-import WildcardToken from "../tokens/layer-0/wildcard-token";
-import WordToken from "../tokens/layer-0/word-token";
 import PeriodToken from "../tokens/layer-0/period-token";
-import SpaceToken from "../tokens/layer-0/space-token";
+import WordToken from "../tokens/layer-0/word-token";
+import WildcardToken from "../tokens/layer-0/wildcard-token";
 import CommentStartToken from "../tokens/layer-0/comment-start-token";
 import LineEndToken from "../tokens/layer-0/line-end-token";
-import {IToken} from "../tokens/i-token";
-
+import SpaceToken from "../tokens/layer-0/space-token";
 
 describe('layer-0 number parser', () => {
+
 
   describe('should parse numbers', () => {
     const dates: [string, NumberToken][] = [

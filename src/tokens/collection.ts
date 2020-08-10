@@ -1,7 +1,7 @@
 import {IToken} from "./i-token";
-import Layer1Parser from "../parsers/layer-1-parser";
-import Layer2Parser from "../parsers/layer-2-parser";
 import Layer3Parser from "../parsers/layer-3-parser";
+import Layer2Parser from "../parsers/layer-2-parser";
+import Layer1Parser from "../parsers/layer-1-parser";
 
 export default class TokenCollection {
   public tokens: IToken[]
