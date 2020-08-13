@@ -1,4 +1,4 @@
-export default class PrimitiveTest {
+export default class Layer0Test {
   static isLetter(raw: string): boolean {
     return this.regexTest(raw, /^['a-zA-Z]$/)
   }
