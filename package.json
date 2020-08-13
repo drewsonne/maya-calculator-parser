@@ -1,6 +1,6 @@
 {
   "name": "@drewsonne/maya-calculator-parser",
-  "version": "1.0.15",
+  "version": "1.0.0",
   "description": "Typescript package to parse plaintext calculations and create operators",
   "main": "src/index.ts",
   "repository": {
@@ -29,7 +29,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@drewsonne/maya-dates": "^1.0.15"
+    "@drewsonne/maya-dates": "^1.0.19"
   },
   "scripts": {
     "test": "mocha -r ts-node/register 'src/**/*.spec.ts'",

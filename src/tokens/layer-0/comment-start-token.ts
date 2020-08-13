@@ -1,4 +1,5 @@
-import {IToken, Token} from "../base";
+import {Token} from "../base";
+import {IToken} from "../i-token";
 
 export default class CommentStartToken extends Token<string> {
   constructor() {

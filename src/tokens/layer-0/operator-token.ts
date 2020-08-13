@@ -1,4 +1,5 @@
-import {IToken, Token} from "../base";
+import {Token} from "../base";
+import {IToken} from "../i-token";
 
 export default class OperatorToken extends Token<string> {
   static parse(raw: string): OperatorToken {
