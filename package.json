@@ -29,7 +29,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@drewsonne/maya-dates": "^1.0.19"
+    "@drewsonne/maya-dates": "^1.0.20"
   },
   "scripts": {
     "test": "mocha -r ts-node/register 'src/**/*.spec.ts'",
