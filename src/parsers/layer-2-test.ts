@@ -4,6 +4,7 @@ import LongCountToken from "../tokens/layer-1/long-count-token";
 import OperatorToken from "../tokens/layer-0/operator-token";
 import CalendarRoundWildcardOperationToken from "../tokens/layer-2/calendar-round-wildcard-operation-token";
 import LongCountWildcardOperationToken from "../tokens/layer-2/long-count-wildcard-operation-token";
+import SpaceToken from "../tokens/layer-0/space-token";
 
 
 export function isPartialOperation(cache: IToken[], layer1Token: IToken): boolean {
@@ -56,4 +57,8 @@ export function isToken(t: IToken): boolean {
 
 export function isOperatorToken(t: IToken): t is OperatorToken {
   return (t instanceof OperatorToken)
+}
+
+export function isSpaceToken(t: IToken): t is SpaceToken {
+  return t instanceof SpaceToken
 }

@@ -5,6 +5,9 @@ import WildcardToken from "../tokens/layer-0/wildcard-token";
 import {IToken} from "../tokens/i-token";
 import PeriodToken from "../tokens/layer-0/period-token";
 import CommentToken from "../tokens/layer-0/comment-token";
+import LineEndToken from "../tokens/layer-0/line-end-token";
+import exp from "constants";
+import {isLongCountToken} from "./layer-2-test";
 
 export function isWordToken(t: IToken): t is WordToken {
   return t instanceof WordToken
@@ -24,6 +27,10 @@ export function isPeriodToken(t: IToken): t is PeriodToken {
 
 export function isCommentToken(t: IToken): t is CommentToken {
   return t instanceof CommentToken
+}
+
+export function isLineEndToken(t: IToken): t is LineEndToken {
+  return t instanceof LineEndToken
 }
 
 export function isCRCoeff(c: IToken): boolean {
@@ -48,6 +55,21 @@ export function isPartialCR(raw: IToken[]): boolean {
     return isFullCR(tokens)
   }
   return false
+}
+
+export function isPartialLC(raw: IToken[], token: IToken): boolean {
+  let result: boolean = true
+  const tokens: IToken[] = raw.concat([token])
+  for (let i = 0; i < tokens.length; i += 2) {
+    const [potentialLC, potentialPeriod] = tokens.slice(i, i + 2)
+    const firstTokenCondition = isWildcardToken(potentialLC) || isNumberToken(potentialLC)
+    if (firstTokenCondition && potentialPeriod === undefined) {
+      continue
+    } else if (!(firstTokenCondition && isPeriodToken(potentialPeriod))) {
+      result = result && false
+    }
+  }
+  return result
 }
 
 export function isFullCR(raw: IToken[]): boolean {

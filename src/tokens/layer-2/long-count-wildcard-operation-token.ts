@@ -4,7 +4,7 @@ import LongCountToken from "../layer-1/long-count-token";
 import {isLongCountToken} from "../../parsers/layer-2-test";
 
 export default class LongCountWildcardOperationToken extends Token<LongCountToken> {
-  static parse(token: IToken): LongCountWildcardOperationToken {
+  static parse(token: LongCountToken): LongCountWildcardOperationToken {
     if (isLongCountToken(token)) {
       return new LongCountWildcardOperationToken(token)
     }

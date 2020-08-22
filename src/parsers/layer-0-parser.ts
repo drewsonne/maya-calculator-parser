@@ -6,16 +6,15 @@ import SpaceToken from "../tokens/layer-0/space-token";
 import WordToken from "../tokens/layer-0/word-token";
 import WildcardToken from "../tokens/layer-0/wildcard-token";
 import TokenCollection from "../tokens/collection";
-import CommentStartToken from "../tokens/layer-0/comment-start-token";
-import CommentToken from "../tokens/layer-0/comment-token";
 import OperatorToken from "../tokens/layer-0/operator-token";
 import {IToken} from "../tokens/i-token";
+import CommentToken from "../tokens/layer-0/comment-token";
+import BaseParser from "./base-parser";
 
 enum Layer0ParserStateValue {
   WAITING,
   PARSING_NUMBER,
   PARSING_WORD,
-  PARSING_COMMENT_START,
   PARSING_COMMENT_BODY,
 }
 
@@ -42,10 +41,6 @@ class Layer0ParserState {
     return this.state === Layer0ParserStateValue.PARSING_WORD
   }
 
-  isParsingCommentStart(): boolean {
-    return this.state === Layer0ParserStateValue.PARSING_COMMENT_START
-  }
-
   isParsingCommentBody(): boolean {
     return this.state === Layer0ParserStateValue.PARSING_COMMENT_BODY
   }
@@ -59,18 +54,16 @@ class Layer0ParserState {
   }
 
   startParsingComment() {
-    this.state = Layer0ParserStateValue.PARSING_COMMENT_START
-  }
-
-  startParsingCommentBody() {
     this.state = Layer0ParserStateValue.PARSING_COMMENT_BODY
   }
+
 }
 
-export default class Layer0Parser {
+export default class Layer0Parser extends BaseParser {
   private state: Layer0ParserState
 
   constructor() {
+    super();
     this.state = new Layer0ParserState()
   }
 
@@ -92,12 +85,13 @@ export default class Layer0Parser {
           tokens.push(SpaceToken.parse(cell))
         } else if (Layer0Test.isWildcard(cell)) {
           tokens.push(WildcardToken.parse(cell))
-        } else if (Layer0Test.isCommentStart(cell)) {
-          tokens.push(CommentStartToken.parse(cell))
-          this.state.startParsingComment()
         } else if (Layer0Test.isOperator(cell)) {
           tokens.push(OperatorToken.parse(cell))
           this.state.reset()
+        } else if (Layer0Test.isCarriageReturn(cell)) {
+          tokens.push(LineEndToken.parse(cell))
+        } else if (Layer0Test.isCommentStart(cell)) {
+          this.state.startParsingComment()
         } else {
           throw new Error('Primitive parser in unexpected state')
         }
@@ -146,26 +140,17 @@ export default class Layer0Parser {
         } else {
           throw new Error('Layer-0 parser in unexpected state')
         }
-      } else if (this.state.isParsingCommentStart()) {
-        if (Layer0Test.isSpace(cell)) {
-          tokens.push(SpaceToken.parse(cell))
-          this.state.startParsingCommentBody()
-        } else if (Layer0Test.isCommentLetter(cell)) {
-          cache = [cell]
-          this.state.startParsingCommentBody()
-        } else {
-          throw new Error('Layer-0 parser in unexpected state')
-        }
       } else if (this.state.isParsingCommentBody()) {
-        if (Layer0Test.isCommentLetter(cell)) {
-          cache.push(cell)
-        } else if (Layer0Test.isCarriageReturn(cell)) {
+        if ((cache.length === 0) && Layer0Test.isSpace(cell)) {
+          continue
+        }
+        if (Layer0Test.isCarriageReturn(cell)) {
           tokens.push(CommentToken.parse(cache.join('')))
           tokens.push(LineEndToken.parse(cell))
           cache = []
           this.state.reset()
         } else {
-          throw new Error('Layer-0 parser in unexpected state')
+          cache.push(cell)
         }
       } else {
         throw new Error('Layer-0 parser in unexpected state')
@@ -174,17 +159,22 @@ export default class Layer0Parser {
     if (cache.length > 0) {
       if (this.state.isParsingNumber()) {
         tokens.push(NumberToken.parse(cache.join('')))
+        cache = []
       } else if (this.state.isParsingWord()) {
         tokens.push(WordToken.parse(cache.join('')))
+        cache = []
       } else if (this.state.isParsingCommentBody()) {
         tokens.push(CommentToken.parse(cache.join('')))
+        cache = []
       } else {
         throw new Error('Layer-0 parser in unexpected state')
       }
     }
-    this.state.reset()
-    return new TokenCollection(tokens)
-  }
 
+    this.state.reset()
+    return new TokenCollection(
+      this.appendLineEnd(tokens)
+    );
+  }
 
 }

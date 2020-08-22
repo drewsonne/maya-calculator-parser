@@ -13,11 +13,13 @@ import WordToken from "../tokens/layer-0/word-token";
 import PeriodToken from "../tokens/layer-0/period-token";
 import WildcardToken from "../tokens/layer-0/wildcard-token";
 import FullDateToken from "../tokens/layer-3/full-date-token";
+import LineEndToken from "../tokens/layer-0/line-end-token";
 
 const NT = (n: number) => new NumberToken(n)
 const WT = (w: string) => new WordToken(w)
 const PT = new PeriodToken()
 const WCT = new WildcardToken()
+const LET = new LineEndToken()
 
 
 describe('layer-3 parser', () => {
@@ -33,7 +35,8 @@ describe('layer-3 parser', () => {
             LongCountWildcardOperationToken.parse(
               LongCountToken.parse([NT(9), PT, WCT, PT, NT(10), PT, NT(10), PT, NT(10)]),
             )
-          )
+          ),
+          LET
         ]
       ],
       [
@@ -44,7 +47,8 @@ describe('layer-3 parser', () => {
               CalendarRoundToken.parse([NT(1), WT('Ok'), WCT, WCT]),
             ),
             LongCountToken.parse([NT(9), PT, NT(4), PT, NT(10), PT, NT(10), PT, NT(10)]),
-          )
+          ),
+          LET
         ]
       ],
       [
@@ -55,7 +59,8 @@ describe('layer-3 parser', () => {
             LongCountWildcardOperationToken.parse(
               LongCountToken.parse([NT(9), PT, WCT, PT, NT(10), PT, NT(10), PT, NT(10)]),
             )
-          )
+          ),
+          LET
         ]
       ],
       [
@@ -64,7 +69,21 @@ describe('layer-3 parser', () => {
           FullDateToken.parse(
             CalendarRoundToken.parse([NT(7), WT('Chikchan'), NT(18), WT('Sip')]),
             LongCountToken.parse([NT(9), PT, NT(10), PT, NT(2), PT, NT(5), PT, NT(5)])
-          )
+          ),
+          LET
+        ]
+      ],
+      [
+        '9.10.*.5.* * Chikchan *Sip',
+        [
+          FullDateWildcardOperationToken.parse(
+            CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([
+              WCT, WT('Chikchan'), WCT, WT('Sip')
+            ])),
+            LongCountWildcardOperationToken.parse(LongCountToken.parse([
+              NT(9), PT, NT(10), PT, WCT, PT, NT(5), PT, WCT
+            ]))
+          ), LET
         ]
       ]
     ]
@@ -77,6 +96,7 @@ describe('layer-3 parser', () => {
 
         const layer3Tokens = new Layer0Parser().parse(rawText).processLayer1().processLayer2().processLayer3()
 
+        expect(`${layer3Tokens}`).to.be.eq(`${expectedTokens}`)
         expect(layer3Tokens.length).to.eq(expectedTokens.length)
         for (let i = 0; i < layer3Tokens.length; i++) {
           expect(
