@@ -57,12 +57,11 @@ class FIFOQueue<T> {
 
 export default class Layer3Parser extends BaseParser {
 
-  parse(layer2Tokens: TokenCollection): TokenCollection {
-    const tokens: IToken[] = []
-    const queueLength = 2
+  parse(rawTokens: TokenCollection): TokenCollection {
+    const tokens: IToken[] = [], queueLength = 2;
     let window: FIFOQueue<IToken> = new FIFOQueue<IToken>(queueLength);
-    for (let cursor = 0; cursor < layer2Tokens.length; cursor += 1) {
-      const currentToken = window.push(layer2Tokens.index(cursor));
+    for (let cursor = 0; cursor < rawTokens.length; cursor += 1) {
+      const currentToken = window.push(rawTokens.index(cursor));
       if (window.isFull()) {
         if (currentToken !== undefined) {
           tokens.push(currentToken)

@@ -2,6 +2,7 @@ import {IToken} from "./i-token";
 import Layer1Parser from "../parsers/layer-1-parser";
 import Layer2Parser from "../parsers/layer-2-parser";
 import Layer3Parser from "../parsers/layer-3-parser";
+import ResolverParser from "../parsers/resolver-parser";
 import IPart from "@drewsonne/maya-dates/lib/i-part";
 
 
@@ -37,6 +38,6 @@ export default class TokenCollection {
   }
 
   resolver(): IPart[] {
-    return []
+    return new ResolverParser().parse(this)
   }
 }

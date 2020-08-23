@@ -98,6 +98,27 @@ export default class Layer2Parser extends BaseParser {
           } else if (isCalendarRoundToken(previous) && isCalendarRoundToken(next)) {
             tokens.push(CalendarRoundOperationToken.parse(previous, token, next))
             cursor += 1
+          } else if (
+            isCalendarRoundToken(next) || isLongCountToken(next)
+          ) {
+            const nonFunctionalTokens: IToken[] = []
+            for (let i = tokens.length - 1; i >= 0; i -= 1) {
+              const element = tokens[i]
+              if (!(isCommentToken(element))) {
+                tokens = tokens.splice(0, i)
+                if (isLongCountToken(next)) {
+                  tokens.push(LongCountOperationToken.parse(element, token, next))
+                  break
+                } else if (isCalendarRoundToken(next)) {
+                  tokens.push(CalendarRoundOperationToken.parse(element, token, next))
+                  break
+                } else {
+                  throw new ParserError(2)
+                }
+              } else {
+                nonFunctionalTokens.push(element)
+              }
+            }
           } else {
             throw new ParserError(2)
           }

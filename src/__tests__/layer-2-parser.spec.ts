@@ -79,7 +79,7 @@ describe('layer-2 parser', () => {
       const [rawText, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawText} -> ${expectedTokens}`, () => {
 
-        const layer1Tokens = new Layer0Parser().parse(rawText).processLayer1().processLayer2()
+        const layer1Tokens = new Layer0Parser().parseRaw(rawText).processLayer1().processLayer2()
 
         expect(`${layer1Tokens}`).to.eq(`${expectedTokens}`)
         expect(layer1Tokens.length).to.eq(expectedTokens.length)
@@ -188,7 +188,7 @@ describe('layer-2 parser', () => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
 
-        const tokenised = new Layer0Parser().parse(rawString).processLayer1().processLayer2()
+        const tokenised = new Layer0Parser().parseRaw(rawString).processLayer1().processLayer2()
 
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
@@ -242,7 +242,7 @@ describe('layer-2 parser', () => {
     longcounts.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new Layer0Parser().parse(rawString).processLayer1()
+        const tokenised = new Layer0Parser().parseRaw(rawString).processLayer1()
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(

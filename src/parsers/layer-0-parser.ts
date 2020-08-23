@@ -67,7 +67,7 @@ export default class Layer0Parser extends BaseParser {
     this.state = new Layer0ParserState()
   }
 
-  parse(rawText: string): TokenCollection {
+  parseRaw(rawText: string): TokenCollection {
     let tokens: IToken[] = []
     let cache: string[] = []
     for (let cursor = 0; cursor < rawText.length; cursor += 1) {
@@ -175,6 +175,10 @@ export default class Layer0Parser extends BaseParser {
     return new TokenCollection(
       this.appendLineEnd(tokens)
     );
+  }
+
+  parse(rawTokens: TokenCollection): TokenCollection {
+    throw new Error('Can only parse raw text in layer-0 parser')
   }
 
 }

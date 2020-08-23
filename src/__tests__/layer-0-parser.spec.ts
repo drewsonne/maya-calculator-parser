@@ -53,7 +53,7 @@ describe('layer-0 parser', () => {
     operations.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new Layer0Parser().parse(rawString)
+        const tokenised = new Layer0Parser().parseRaw(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
@@ -90,7 +90,7 @@ describe('layer-0 parser', () => {
     fullLines.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const actualTokens = new Layer0Parser().parse(rawString)
+        const actualTokens = new Layer0Parser().parseRaw(rawString)
         expect(`${actualTokens}`).to.eq(`${expectedTokens}`)
         expect(actualTokens.length).to.eq(expectedTokens.length)
         for (let i = 0; i < actualTokens.length; i++) {
@@ -118,7 +118,7 @@ describe('layer-0 parser', () => {
     fullDates.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new Layer0Parser().parse(rawString)
+        const tokenised = new Layer0Parser().parseRaw(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
@@ -149,7 +149,7 @@ describe('layer-0 parser', () => {
     crs.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new Layer0Parser().parse(rawString)
+        const tokenised = new Layer0Parser().parseRaw(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
@@ -186,7 +186,7 @@ describe('layer-0 parser', () => {
     parsed.forEach((pattern) => {
       const [rawString, expectedTokens] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new Layer0Parser().parse(rawString)
+        const tokenised = new Layer0Parser().parseRaw(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(

@@ -94,7 +94,7 @@ describe('layer-3 parser', () => {
       const [rawText, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawText} -> ${expectedTokens}`, () => {
 
-        const layer3Tokens = new Layer0Parser().parse(rawText).processLayer1().processLayer2().processLayer3()
+        const layer3Tokens = new Layer0Parser().parseRaw(rawText).processLayer1().processLayer2().processLayer3()
 
         expect(`${layer3Tokens}`).to.be.eq(`${expectedTokens}`)
         expect(layer3Tokens.length).to.eq(expectedTokens.length)
