@@ -1,6 +1,6 @@
 {
   "name": "@drewsonne/maya-calculator-parser",
-  "version": "1.0.15",
+  "version": "1.0.1",
   "description": "Typescript package to parse plaintext calculations and create operators",
   "main": "src/index.ts",
   "repository": {
