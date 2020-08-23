@@ -1,3 +1,5 @@
+import {IToken} from "./i-token";
+
 export abstract class Token<T> implements IToken {
   public value: T
 
@@ -12,8 +14,3 @@ export abstract class Token<T> implements IToken {
   }
 }
 
-export interface IToken {
-  equal(otherToken: IToken): boolean
-
-  value: any
-}

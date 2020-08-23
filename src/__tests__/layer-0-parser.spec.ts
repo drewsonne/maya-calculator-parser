@@ -1,17 +1,17 @@
 import {expect} from 'chai'
 import 'mocha'
-import PrimitiveParser from "../parsers/primitive";
-import {IToken} from "../tokens/base";
-import NumberToken from "../tokens/primitive/number-token";
-import PeriodToken from "../tokens/primitive/period-token";
+import Layer0Parser from "../parsers/layer-0-parser";
+import NumberToken from "../tokens/layer-0/number-token";
+import PeriodToken from "../tokens/layer-0/period-token";
 import TokenCollection from "../tokens/collection";
-import LineEndToken from "../tokens/primitive/line-end-token";
-import SpaceToken from "../tokens/primitive/space-token";
-import WordToken from "../tokens/primitive/word-token";
-import WildcardToken from "../tokens/primitive/wildcard-token";
-import CommentStartToken from "../tokens/primitive/comment-start-token";
-import CommentToken from "../tokens/primitive/comment-token";
-import OperatorToken from "../tokens/primitive/operator-token";
+import LineEndToken from "../tokens/layer-0/line-end-token";
+import SpaceToken from "../tokens/layer-0/space-token";
+import WordToken from "../tokens/layer-0/word-token";
+import WildcardToken from "../tokens/layer-0/wildcard-token";
+import CommentStartToken from "../tokens/layer-0/comment-start-token";
+import CommentToken from "../tokens/layer-0/comment-token";
+import OperatorToken from "../tokens/layer-0/operator-token";
+import {IToken} from "../tokens/i-token";
 
 
 const NT = (n: number) => new NumberToken(n)
@@ -24,7 +24,7 @@ const ST = new SpaceToken()
 const WCT = new WildcardToken()
 const CST = new CommentStartToken()
 
-describe('primitive parser', () => {
+describe('layer-0 parser', () => {
 
   describe('should parse operators', () => {
     const looseOperations: [string, IToken[]][] = [
@@ -50,7 +50,7 @@ describe('primitive parser', () => {
     operations.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new PrimitiveParser().parse(rawString)
+        const tokenised = new Layer0Parser().parse(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
@@ -86,7 +86,7 @@ describe('primitive parser', () => {
     fullLines.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new PrimitiveParser().parse(rawString)
+        const tokenised = new Layer0Parser().parse(rawString)
         // expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
@@ -110,7 +110,7 @@ describe('primitive parser', () => {
     fullDates.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new PrimitiveParser().parse(rawString)
+        const tokenised = new Layer0Parser().parse(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
@@ -141,7 +141,7 @@ describe('primitive parser', () => {
     crs.forEach((pattern) => {
       const [rawString, expectedTokens]: [string, TokenCollection] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new PrimitiveParser().parse(rawString)
+        const tokenised = new Layer0Parser().parse(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
@@ -169,14 +169,15 @@ describe('primitive parser', () => {
         NT(17), PT,
         ST, NT(2), PT,
         ST, NT(1),
-      ]]
+      ]],
+      ['*.*.*.7.13', [WCT, PT, WCT, PT, WCT, PT, NT(7), PT, NT(13)]]
     ]
 
     const parsed: [string, TokenCollection][] = dates.map((row: [string, IToken[]]) => [row[0], new TokenCollection(row[1])])
     parsed.forEach((pattern) => {
       const [rawString, expectedTokens] = pattern
       it(`${rawString} -> ${expectedTokens}`, () => {
-        const tokenised = new PrimitiveParser().parse(rawString)
+        const tokenised = new Layer0Parser().parse(rawString)
         expect(tokenised.length).to.eq(expectedTokens.length)
         for (let i = 0; i < tokenised.length; i++) {
           expect(
