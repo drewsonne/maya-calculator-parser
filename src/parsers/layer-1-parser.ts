@@ -4,15 +4,14 @@ import SpaceToken from "../tokens/layer-0/space-token";
 import WordToken from "../tokens/layer-0/word-token";
 import CalendarRoundToken from "../tokens/layer-1/calendar-round-token";
 import WildcardToken from "../tokens/layer-0/wildcard-token";
-import {Comment} from "typedoc/dist/lib/models";
 import CommentToken from "../tokens/layer-0/comment-token";
 import PeriodToken from "../tokens/layer-0/period-token";
 import LongCountToken from "../tokens/layer-1/long-count-token";
-import LineEndToken from "../tokens/layer-0/line-end-token";
 import {IToken} from "../tokens/i-token";
 import OperatorToken from "../tokens/layer-0/operator-token";
 import CommentStartToken from "../tokens/layer-0/comment-start-token";
-import {isFullCR, isPartialCR} from "./layer-1-test";
+import {isFullCR, isPartialCR, isPeriodToken} from "./layer-1-test";
+import {isLineEndToken} from "../tokens/layer-0/line-end-token";
 
 enum Layer1ParserStateValue {
   WAITING,
@@ -87,6 +86,8 @@ export default class Layer1Parser {
           continue
         } else if (layer0Token instanceof CommentToken) {
           tokens.push(layer0Token)
+        } else if (isLineEndToken(layer0Token)) {
+          tokens.push(layer0Token)
         } else {
           throw new Error('Layer-1 parser in unexpected state')
         }
@@ -103,6 +104,13 @@ export default class Layer1Parser {
         } else if (layer0Token instanceof PeriodToken) {
           cache.push(layer0Token)
           this.state.startParsingLongCount()
+        } else if (isLineEndToken(layer0Token)) {
+          cache.forEach((token) => {
+            tokens.push(token)
+          })
+          tokens.push(layer0Token)
+          cache = []
+          this.state.reset()
         } else {
           throw new Error('Layer-1 parser in unexpected state')
         }
@@ -112,6 +120,9 @@ export default class Layer1Parser {
             CalendarRoundToken.parse(cache)
           )
           cache = []
+          if (isLineEndToken(layer0Token)) {
+            tokens.push(layer0Token)
+          }
           this.state.reset()
         } else if (isPartialCR(cache)) {
           cache.push(layer0Token)
@@ -125,8 +136,12 @@ export default class Layer1Parser {
           (layer0Token instanceof WildcardToken)
         ) {
           cache.push(layer0Token)
-        } else if ((layer0Token instanceof LineEndToken)) {
-          tokens.push(LongCountToken.parse(cache))
+        } else if (isLineEndToken(layer0Token)) {
+          if (isPeriodToken(cache[cache.length - 1])) {
+            cache.forEach((t) => tokens.push(t))
+          } else {
+            tokens.push(LongCountToken.parse(cache))
+          }
           cache = []
         } else if (layer0Token instanceof SpaceToken) {
           continue
@@ -161,6 +176,6 @@ export default class Layer1Parser {
         throw new Error('Layer-1 parser in unexpected state')
       }
     }
-    return new TokenCollection(tokens);
+    return new TokenCollection(tokens).normaliseLineEndToken()
   }
 }

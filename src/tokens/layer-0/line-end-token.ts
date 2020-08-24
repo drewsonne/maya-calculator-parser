@@ -1,7 +1,7 @@
 import {Token} from "../base";
 import {IToken} from "../i-token";
 
-export default class LineEndToken extends Token<string> {
+export class LineEndToken extends Token<string> {
   constructor() {
     super("\n");
   }
@@ -18,4 +18,8 @@ export default class LineEndToken extends Token<string> {
     return (otherToken instanceof LineEndToken)
   }
 
+}
+
+export function isLineEndToken(part: IToken): part is LineEndToken {
+  return part instanceof LineEndToken
 }

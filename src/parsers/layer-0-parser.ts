@@ -1,7 +1,6 @@
 import Layer0Test from "./layer-0-test";
 import NumberToken from "../tokens/layer-0/number-token";
 import PeriodToken from "../tokens/layer-0/period-token";
-import LineEndToken from "../tokens/layer-0/line-end-token";
 import SpaceToken from "../tokens/layer-0/space-token";
 import WordToken from "../tokens/layer-0/word-token";
 import WildcardToken from "../tokens/layer-0/wildcard-token";
@@ -10,6 +9,7 @@ import CommentStartToken from "../tokens/layer-0/comment-start-token";
 import CommentToken from "../tokens/layer-0/comment-token";
 import OperatorToken from "../tokens/layer-0/operator-token";
 import {IToken} from "../tokens/i-token";
+import {LineEndToken} from "../tokens/layer-0/line-end-token";
 
 enum Layer0ParserStateValue {
   WAITING,
@@ -93,7 +93,6 @@ export default class Layer0Parser {
         } else if (Layer0Test.isWildcard(cell)) {
           tokens.push(WildcardToken.parse(cell))
         } else if (Layer0Test.isCommentStart(cell)) {
-          tokens.push(CommentStartToken.parse(cell))
           this.state.startParsingComment()
         } else if (Layer0Test.isOperator(cell)) {
           tokens.push(OperatorToken.parse(cell))
@@ -148,7 +147,6 @@ export default class Layer0Parser {
         }
       } else if (this.state.isParsingCommentStart()) {
         if (Layer0Test.isSpace(cell)) {
-          tokens.push(SpaceToken.parse(cell))
           this.state.startParsingCommentBody()
         } else if (Layer0Test.isCommentLetter(cell)) {
           cache = [cell]
@@ -183,7 +181,7 @@ export default class Layer0Parser {
       }
     }
     this.state.reset()
-    return new TokenCollection(tokens)
+    return new TokenCollection(tokens).normaliseLineEndToken()
   }
 
 
