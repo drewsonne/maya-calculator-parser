@@ -5,10 +5,7 @@ import WordToken from "../tokens/layer-0/word-token";
 import CommentToken from "../tokens/layer-0/comment-token";
 import OperatorToken from "../tokens/layer-0/operator-token";
 import PeriodToken from "../tokens/layer-0/period-token";
-import LineEndToken from "../tokens/layer-0/line-end-token";
-import SpaceToken from "../tokens/layer-0/space-token";
 import WildcardToken from "../tokens/layer-0/wildcard-token";
-import CommentStartToken from "../tokens/layer-0/comment-start-token";
 import TokenCollection from "../tokens/collection";
 import CalendarRoundToken from "../tokens/layer-1/calendar-round-token";
 import LongCountToken from "../tokens/layer-1/long-count-token";
@@ -18,6 +15,7 @@ import LongCountWildcardOperationToken from "../tokens/layer-2/long-count-wildca
 import CalendarRoundWildcardOperationToken from "../tokens/layer-2/calendar-round-wildcard-operation-token";
 import CalendarRoundOperationToken from "../tokens/layer-2/calendar-round-operation-token";
 import LongCountOperationToken from "../tokens/layer-2/long-count-operation-token";
+import {LineEndToken} from "../tokens/layer-0/line-end-token";
 
 const NT = (n: number) => new NumberToken(n)
 const WT = (w: string) => new WordToken(w)
@@ -25,6 +23,7 @@ const CT = (c: string) => new CommentToken(c)
 const OT = (o: string) => new OperatorToken(o)
 const PT = new PeriodToken()
 const WCT = new WildcardToken()
+const LET = new LineEndToken()
 
 
 describe('layer-2 parser', () => {
@@ -38,7 +37,8 @@ describe('layer-2 parser', () => {
             CalendarRoundToken.parse([NT(4), WT('Ajaw'), NT(8), WT('Kumk\'u')]),
             OT('-'),
             CalendarRoundToken.parse([NT(5), WT('Kimi'), NT(4), WT('Mol')]),
-          )
+          ),
+          LET
         ]
       ],
       [
@@ -48,7 +48,8 @@ describe('layer-2 parser', () => {
             LongCountToken.parse([NT(9), PT, NT(2), PT, NT(10), PT, NT(10), PT, NT(10)]),
             OT('+'),
             LongCountToken.parse([NT(10), PT, NT(5), PT, NT(1)])
-          )
+          ),
+          LET
         ]
       ],
       [
@@ -56,7 +57,8 @@ describe('layer-2 parser', () => {
         [
           CalendarRoundWildcardOperationToken.parse(
             CalendarRoundToken.parse([NT(1), WT('Ok'), WCT, WCT]),
-          )
+          ),
+          LET
         ]
       ],
       [
@@ -64,7 +66,8 @@ describe('layer-2 parser', () => {
         [
           LongCountWildcardOperationToken.parse(
             LongCountToken.parse([NT(9), PT, WCT, PT, NT(10), PT, NT(10), PT, NT(10)]),
-          )
+          ),
+          LET
         ]
       ]
     ]
@@ -93,50 +96,82 @@ describe('layer-2 parser', () => {
     const looseCrs: [string, IToken[]][] = [
       [
         '4 Ajaw 8 Kumk\'u',
-        [CalendarRoundToken.parse([NT(4), WT('Ajaw'), NT(8), WT('Kumk\'u')])]
+        [
+          CalendarRoundToken.parse([NT(4), WT('Ajaw'), NT(8), WT('Kumk\'u')]),
+          LET
+        ]
       ],
       [
         "4 Ajaw 8 Kumk\'u\n3 Kawak **",
         [
           CalendarRoundToken.parse([NT(4), WT('Ajaw'), NT(8), WT('Kumk\'u')]),
-          CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([NT(3), WT('Kawak'), WCT, WCT]))
+          LET,
+          CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([NT(3), WT('Kawak'), WCT, WCT])),
+          LET
         ]
       ],
       [
         '3 Kawak **',
-        [CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([NT(3), WT('Kawak'), WCT, WCT]))]
+        [
+          CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([NT(3), WT('Kawak'), WCT, WCT])),
+          LET
+        ]
       ],
       [
         '* Ajaw 8 Kumk\'u',
-        [CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([WCT, WT('Ajaw'), NT(8), WT('Kumk\'u')]))]
+        [
+          CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([WCT, WT('Ajaw'), NT(8), WT('Kumk\'u')])),
+          LET
+        ]
       ],
       [
         '6 Manik\' 5 Mol',
-        [CalendarRoundToken.parse([NT(6), WT('Manik\''), NT(5), WT('Mol')])]
+        [
+          CalendarRoundToken.parse([NT(6), WT('Manik\''), NT(5), WT('Mol')]),
+          LET
+        ]
       ],
       [
         '* * 12 Mol',
-        [CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([WCT, WCT, NT(12), WT('Mol')]))]
+        [
+          CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([WCT, WCT, NT(12), WT('Mol')])),
+          LET
+        ]
       ],
       [
         '3 Kawak 7 Kumk\'u',
-        [CalendarRoundToken.parse([NT(3), WT('Kawak'), NT(7), WT('Kumk\'u')])]
+        [
+          CalendarRoundToken.parse([NT(3), WT('Kawak'), NT(7), WT('Kumk\'u')]),
+          LET
+        ]
       ],
       [
         '4 Ajaw 8 Kumk\'u',
-        [CalendarRoundToken.parse([NT(4), WT('Ajaw'), NT(8), WT('Kumk\'u')])]
+        [
+          CalendarRoundToken.parse([NT(4), WT('Ajaw'), NT(8), WT('Kumk\'u')]),
+          LET
+        ]
       ],
       [
         '** 13 Xul',
-        [CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([WCT, WCT, NT(13), WT('Xul')]))]
+        [
+          CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([WCT, WCT, NT(13), WT('Xul')])),
+          LET
+        ]
       ],
       [
         '6 Kimi * * ',
-        [CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([NT(6), WT('Kimi'), WCT, WCT]))]
+        [
+          CalendarRoundWildcardOperationToken.parse(CalendarRoundToken.parse([NT(6), WT('Kimi'), WCT, WCT])),
+          LET
+        ]
       ],
       [
         '5 Kimi 4 Mol',
-        [CalendarRoundToken.parse([NT(5), WT('Kimi'), NT(4), WT('Mol')])]
+        [
+          CalendarRoundToken.parse([NT(5), WT('Kimi'), NT(4), WT('Mol')]),
+          LET
+        ]
       ],
       [
         '* Chikchan 3 Mol #Hello, world',
@@ -144,7 +179,8 @@ describe('layer-2 parser', () => {
           CalendarRoundWildcardOperationToken.parse(
             CalendarRoundToken.parse([WCT, WT('Chikchan'), NT(3), WT('Mol')])
           ),
-          CT('Hello, world')
+          CT('Hello, world'),
+          LET
         ]
       ],
     ]
@@ -171,32 +207,35 @@ describe('layer-2 parser', () => {
     const looseLongCounts: [string, IToken[]][] = [
       [
         '7.13',
-        [LongCountToken.parse([NT(7), PT, NT(13)])]
+        [LongCountToken.parse([NT(7), PT, NT(13)]), LET]
       ],
       [
         '0.0.0.7.13',
-        [LongCountToken.parse([NT(0), PT, NT(0), PT, NT(0), PT, NT(7), PT, NT(13)])]
+        [LongCountToken.parse([NT(0), PT, NT(0), PT, NT(0), PT, NT(7), PT, NT(13)]), LET]
       ],
       [
         '9.16.19.17.19',
-        [LongCountToken.parse([NT(9), PT, NT(16), PT, NT(19), PT, NT(17), PT, NT(19)])]
+        [LongCountToken.parse([NT(9), PT, NT(16), PT, NT(19), PT, NT(17), PT, NT(19)]), LET]
       ],
       [
         "10.10\n9.9",
-        [LongCountToken.parse([NT(10), PT, NT(10)]), LongCountToken.parse([NT(9), PT, NT(9)])]
+        [LongCountToken.parse([NT(10), PT, NT(10)]), LongCountToken.parse([NT(9), PT, NT(9)]), LET]
       ],
       [
         ' 8. 7. 6. 5. 4.17. 2. 1',
-        [LongCountToken.parse([
-          NT(8), PT,
-          NT(7), PT,
-          NT(6), PT,
-          NT(5), PT,
-          NT(4), PT,
-          NT(17), PT,
-          NT(2), PT,
-          NT(1),
-        ])]
+        [
+          LongCountToken.parse([
+            NT(8), PT,
+            NT(7), PT,
+            NT(6), PT,
+            NT(5), PT,
+            NT(4), PT,
+            NT(17), PT,
+            NT(2), PT,
+            NT(1),
+          ]),
+          LET
+        ]
       ]
     ]
 
@@ -216,6 +255,5 @@ describe('layer-2 parser', () => {
       })
     })
   })
-
 })
 

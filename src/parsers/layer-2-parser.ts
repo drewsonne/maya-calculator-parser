@@ -11,6 +11,7 @@ import LongCountOperationToken from "../tokens/layer-2/long-count-operation-toke
 import CalendarRoundWildcardOperationToken from "../tokens/layer-2/calendar-round-wildcard-operation-token";
 import LongCountWildcardOperationToken from "../tokens/layer-2/long-count-wildcard-operation-token";
 import {isCommentToken} from "./layer-1-test";
+import {isLineEndToken} from "../tokens/layer-0/line-end-token";
 
 
 export default class Layer2Parser {
@@ -88,6 +89,8 @@ export default class Layer2Parser {
         cache.push(layer1Token)
       } else if (isCommentToken(layer1Token)) {
         tokens.push(layer1Token)
+      } else if (isLineEndToken(layer1Token)) {
+        tokens.push(layer1Token)
       } else {
         throw new Error('Layer-2 parser in unexpected state')
       }
@@ -95,6 +98,6 @@ export default class Layer2Parser {
     if (cache.length > 0) {
       debugger
     }
-    return new TokenCollection(tokens)
+    return new TokenCollection(tokens).normaliseLineEndToken()
   }
 }

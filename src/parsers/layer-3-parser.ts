@@ -48,7 +48,7 @@ export default class Layer3Parser {
 
   parse(layer2Tokens: TokenCollection): TokenCollection {
     const tokens: IToken[] = []
-    let window: FIFOQueue<IToken> = new FIFOQueue<IToken>(2);
+    let window: FIFOQueue<IToken> = new FIFOQueue<IToken>(3);
     for (let cursor = 0; cursor < layer2Tokens.length; cursor += 1) {
       const currentToken = window.push(layer2Tokens.index(cursor));
       if (window.isFull()) {
@@ -71,7 +71,7 @@ export default class Layer3Parser {
         }
       }
     }
-    return new TokenCollection(tokens)
+    return new TokenCollection(tokens).normaliseLineEndToken()
   }
 }
 

@@ -1,5 +1,5 @@
 export interface IToken {
-  equal(otherToken: IToken): boolean
+  equal(otherToken: IToken): boolean;
 
-  value: any
+  value: any;
 }
