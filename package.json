@@ -19,6 +19,7 @@
     "@babel/preset-env": "^7.8.4",
     "@types/chai": "^4.2.10",
     "@types/mocha": "^7.0.2",
+    "@types/moo": "^0.5.10",
     "@types/node": "^14.0.26",
     "chai": "^4.2.0",
     "mocha": "^7.1.0",
@@ -29,7 +30,8 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@drewsonne/maya-dates": "^1.0.20"
+    "@drewsonne/maya-dates": "^1.0.20",
+    "moo": "^0.5.1"
   },
   "scripts": {
     "test": "mocha -r ts-node/register 'src/**/*.spec.ts'",
