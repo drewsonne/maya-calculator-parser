@@ -6,10 +6,13 @@ import WordToken from "../tokens/layer-0/word-token";
 import WildcardToken from "../tokens/layer-0/wildcard-token";
 import LongCountToken from "../tokens/layer-1/long-count-token";
 import PeriodToken from "../tokens/layer-0/period-token";
-import CalendarRoundFactory from "@drewsonne/maya-dates/lib/factory/calendar-round";
-import {CalendarRound, origin} from "@drewsonne/maya-dates/lib/cr/calendar-round";
-import LongCount from "@drewsonne/maya-dates/lib/lc/long-count";
-import {Wildcard} from "@drewsonne/maya-dates/lib/wildcard";
+import {
+  CalendarRoundFactory,
+  CalendarRound,
+  calendarRoundOrigin as origin,
+  LongCount,
+  Wildcard
+} from "@drewsonne/maya-dates";
 
 const NT = (n: number) => new NumberToken(n)
 const WT = (w: string) => new WordToken(w)

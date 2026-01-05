@@ -4,12 +4,18 @@ import WordToken from "../layer-0/word-token";
 import NumberToken from "../layer-0/number-token";
 import {IToken} from "../i-token";
 import WildcardToken from "../layer-0/wildcard-token";
-import {CalendarRound, getCalendarRound, origin} from "@drewsonne/maya-dates/lib/cr/calendar-round";
-import {getTzolkin, Tzolkin} from "@drewsonne/maya-dates/lib/cr/tzolkin";
-import {getHaab, Haab} from "@drewsonne/maya-dates/lib/cr/haab";
-import {coefficientParser as _} from "@drewsonne/maya-dates/lib/cr/component/coefficient";
-import {getTzolkinDay} from "@drewsonne/maya-dates/lib/cr/component/tzolkinDay";
-import {getHaabMonth} from "@drewsonne/maya-dates/lib/cr/component/haabMonth";
+import {
+  CalendarRound,
+  getCalendarRound,
+  calendarRoundOrigin as origin,
+  getTzolkin,
+  Tzolkin,
+  getHaab,
+  Haab,
+  coefficientParser as _,
+  getTzolkinDay,
+  getHaabMonth
+} from "@drewsonne/maya-dates";
 
 export default class CalendarRoundToken extends Token<IToken[]> {
   static parse(tokens: IToken[]): CalendarRoundToken {
