@@ -309,12 +309,14 @@ The following rules cannot be expressed in context-free grammar but must be vali
 
 **Important Notes**:
 - **Winal (position 3)** uses base-18, not base-20
-- Partial Long Counts are valid (1-5 parts)
+- **Standard Long Counts**: 1-5 parts (most common usage)
+- **Extended Long Counts**: Parser accepts more than 5 parts (for flexibility)
 - Examples:
-  - `13.0.0.0.0` = 13 baktuns (valid)
-  - `9.16.19.17.19` = full date (valid)
-  - `7.13` = partial date (valid)
-  - `0.0.0.0.0` = creation date (valid)
+  - `13.0.0.0.0` = 13 baktuns (valid, 5 parts)
+  - `9.16.19.17.19` = full date (valid, 5 parts)
+  - `7.13` = partial date (valid, 2 parts)
+  - `0.0.0.0.0` = creation date (valid, 5 parts)
+  - `8.7.6.5.4.17.2.1` = extended format (valid, 8 parts)
 - Wildcards bypass all range validation
 
 ### Operation Constraints
@@ -454,8 +456,8 @@ This is tokenized as: `[NUMBER(6), WORD("Manik'"), SPACE, NUMBER(5), WORD("Mol")
 **With Spaces Around Periods**:
 
 ```
-8. 7. 6. 5. 4.17. 2. 1    # Spaces around periods (valid)
-9 . 16 . 19 . 17 . 19      # More spaces (valid)
+8. 7. 6. 5. 4. 17. 2. 1    # Spaces around periods (valid, 8 parts - exceeds standard)
+9 . 16 . 19 . 17 . 19      # More spaces (valid, standard 5 parts)
 ```
 
 **With Wildcards**:
@@ -1102,8 +1104,8 @@ Use this checklist to verify parser implementation against the grammar:
 
 ### Related Documentation
 
-- **Issue drewsonne/maya-calculator-parser#19**: Parser implementation using this grammar
-- **Issue drewsonne/maya-calculator-parser#25**: Interactive railroad diagram generator
+- **Issue #3**: Parser implementation using this grammar (planned)
+- **Issue #10**: Interactive railroad diagram generator (planned)
 
 ---
 
