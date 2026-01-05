@@ -31,6 +31,9 @@
   "dependencies": {
     "@drewsonne/maya-dates": "^1.3.0"
   },
+  "engines": {
+    "node": ">=20.0.0 <25.0.0"
+  },
   "scripts": {
     "test": "mocha -r ts-node/register 'src/**/*.spec.ts'",
     "build": "tsc",
