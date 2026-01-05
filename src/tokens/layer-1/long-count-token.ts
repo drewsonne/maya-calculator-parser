@@ -3,8 +3,7 @@ import NumberToken from "../layer-0/number-token";
 import PeriodToken from "../layer-0/period-token";
 import {IToken} from "../i-token";
 import WildcardToken from "../layer-0/wildcard-token";
-import LongCount from "@drewsonne/maya-dates/lib/lc/long-count";
-import {Wildcard} from "@drewsonne/maya-dates/lib/wildcard";
+import { LongCount, Wildcard } from '@drewsonne/maya-dates';
 import {isNumberToken, isPeriodToken, isWildcardToken} from "../../parsers/layer-1-test";
 
 export default class LongCountToken extends Token<IToken[]> {
