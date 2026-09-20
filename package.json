@@ -26,7 +26,7 @@
     "regenerator-runtime": "^0.13.3",
     "ts-node": "^8.10.2",
     "typedoc": "^0.16.11",
-    "typescript": "^3.9.7"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@drewsonne/maya-dates": "^1.0.20"
