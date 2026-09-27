@@ -18,6 +18,7 @@
     "rootDir": "src",
     "strict": true,
     "noImplicitAny": true,
+    "downlevelIteration": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
